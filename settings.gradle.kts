@@ -10,8 +10,14 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
+        jcenter()
+        maven("https://jitpack.io")
     }
 }
 
 rootProject.name = "VkMarket"
 include(":app")
+include(":offers")
+include(":offer-detail")
+include(":core-ui")
+include(":core-data")

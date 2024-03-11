@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/smartphone"
+        android:title="смартфоны" />
+    <item
+        android:id="@+id/laptops"
+        android:title="ноутбуки" />
+    <item
+        android:id="@+id/fragrances"
+        android:title="парфюм" />
+    <item
+        android:id="@+id/skincare"
+        android:title="уход за кожей" />
+    <item
+        android:id="@+id/groceries"
+        android:title="продукты" />
+    <item
+        android:id="@+id/homeDecor"
+        android:title="украшения для дома" />
+    <item
+        android:id="@+id/furniture"
+        android:title="мебель" />
+    <item
+        android:id="@+id/tops"
+        android:title="топы" />
+    <item
+        android:id="@+id/womens_dresses"
+        android:title="платья" />
+    <item
+        android:id="@+id/man_shirts"
+        android:title="мужские рубашки" />
+    <item
+        android:id="@+id/man_shoes"
+        android:title="мужская обувь" />
+    <item
+        android:id="@+id/mens_watches"
+        android:title="мужские часы" />
+    <item
+        android:id="@+id/womens_watches"
+        android:title="женские часы" />
+    <item
+        android:id="@+id/womens_bags"
+        android:title="женские сумки" />
+    <item
+        android:id="@+id/womens_jewellery"
+        android:title="женские украшения" />
+    <item
+        android:id="@+id/sunglasses"
+        android:title="солнцезащитные очки" />
+    <item
+        android:id="@+id/automotive"
+        android:title="авто" />
+    <item
+        android:id="@+id/motorcycle"
+        android:title="мото" />
+    <item
+        android:id="@+id/lighting"
+        android:title="освещение" />
+</menu>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/offer_detail_navigation"
+    app:startDestination="@id/offerDetailFragment">
+
+    <fragment
+        android:id="@+id/offerDetailFragment"
+        android:name="com.example.offer_detail.OfferDetailFragment"
+        android:label="OfferDetailFragment">
+
+        <argument
+            android:name="offer"
+            app:argType="string" />
+        <deepLink app:uri="vkMarket://offerDetail?offer={offer}" />
+    </fragment>
+
+</navigation>

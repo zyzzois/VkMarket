@@ -1,0 +1,16 @@
+<resources>
+    <string name="try_again">Повторить</string>
+    <string name="internet_connection_failed">Произошла ошибка при загрузке данных, проверьте подключение к сети</string>
+    <string name="unwailable_network_image">Unavailable network image</string>
+    <string name="offer_image_content_description">offer_image_content_description</string>
+    <string name="offer_description">Финансы</string>
+    <string name="offer_name">Рофлы с Волк Стрит</string>
+    <string name="menu_title">menu</string>
+    <string name="empty_category_list_notification">По данной категории пока нет предложений :(</string>
+    <string name="warning_title">Упс… кажется у тебя нет интернета</string>
+    <string name="warning_message">но ты все еще можешь просматривать часть загруженного контента</string>
+    <string name="accept_warning">принять</string>
+    <string name="enable_connection">настройки</string>
+    <string name="find_offer_hint">Найти товар</string>
+
+</resources>
