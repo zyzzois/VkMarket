@@ -25,6 +25,7 @@
 
             <ImageView
                 android:id="@+id/offerImage"
+                android:background="@drawable/gray_rounded_background"
                 android:layout_width="63dp"
                 android:layout_height="63dp"
                 android:contentDescription="@string/offer_image_content_description"
@@ -50,7 +51,7 @@
                     android:id="@+id/offetTitle"
                     android:textSize="16sp"
                     android:layout_weight="1"
-                    android:fontFamily="@font/roboto_medium"
+                    android:fontFamily="@font/vk_sans_display_medium"
                     android:textColor="@color/black"
                     android:text="@string/offer_name"
                     android:layout_width="0dp"
@@ -61,7 +62,7 @@
             <TextView
                 android:id="@+id/offerType"
                 android:textSize="12sp"
-                android:fontFamily="@font/roboto_bold"
+                android:fontFamily="@font/vk_sans_display_bold"
                 android:text="@string/offer_description"
                 android:maxLines="2"
                 android:ellipsize="end"

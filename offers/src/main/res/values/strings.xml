@@ -1,7 +1,7 @@
 <resources>
     <string name="try_again">Повторить</string>
     <string name="internet_connection_failed">Произошла ошибка при загрузке данных, проверьте подключение к сети</string>
-    <string name="unwailable_network_image">Unavailable network image</string>
+    <string name="unawailable_network_image">Unavailable network image</string>
     <string name="offer_image_content_description">offer_image_content_description</string>
     <string name="offer_description">Финансы</string>
     <string name="offer_name">Рофлы с Волк Стрит</string>

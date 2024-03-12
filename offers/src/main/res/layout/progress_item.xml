@@ -23,14 +23,11 @@
             android:layout_height="wrap_content">
             <ImageView
                 android:layout_width="63dp"
+                android:contentDescription="@string/offer_image_content_description"
                 android:src="@drawable/gray_rounded_background"
-                android:scaleType="fitCenter"
-                android:layout_height="63dp"
-                android:contentDescription="@string/offer_image_content_description" />
+                android:layout_height="63dp"/>
 
         </androidx.cardview.widget.CardView>
-
-
 
         <LinearLayout
             android:layout_marginStart="16dp"
@@ -45,25 +42,16 @@
                 android:layout_height="wrap_content">
 
                 <TextView
-                    android:textSize="16sp"
-                    android:layout_weight="1"
                     android:background="@drawable/gray_rounded_background"
-                    android:fontFamily="@font/roboto_medium"
-                    android:textColor="@color/black"
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
 
             </LinearLayout>
 
             <TextView
                 android:textSize="12sp"
-                android:fontFamily="@font/roboto_bold"
-                android:text="@string/offer_description"
-                android:maxLines="2"
                 android:background="@drawable/gray_rounded_background"
-                android:ellipsize="end"
-                android:textColor="@color/light_gray"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
 
         </LinearLayout>

@@ -5,5 +5,6 @@
     <color name="light_gray">#B1B1B1</color>
     <color name="soft_gray">#CCCCCC</color>
     <color name="green">#004D40</color>
+    <color name="soft_blue">#E3F2FD</color>
     <color name="light_green">#00695C</color>
 </resources>

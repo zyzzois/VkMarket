@@ -1,5 +1,6 @@
 package com.example.offers.data.remote
 
+import com.example.offers.data.OffersRepositoryImpl.Companion.PAGE_SIZE
 import com.example.offers.data.remote.dto.OffersDto
 import retrofit2.Response
 import retrofit2.http.GET
@@ -10,7 +11,7 @@ interface OffersApiService {
     @GET("products")
     suspend fun getAllOffers(
         @Query("skip") skip: Int,
-        @Query("limit") limit: Int = 20
+        @Query("limit") limit: Int = PAGE_SIZE
     ): Response<OffersDto>
 
     @GET("/products/category/{category}")

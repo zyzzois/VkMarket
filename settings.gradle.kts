@@ -15,7 +15,7 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "VkMarket"
+rootProject.name = "VK Маркет"
 include(":app")
 include(":offers")
 include(":offer-detail")

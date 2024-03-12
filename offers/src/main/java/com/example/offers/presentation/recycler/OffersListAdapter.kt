@@ -2,6 +2,7 @@ package com.example.offers.presentation.recycler
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import androidx.paging.PagingDataAdapter
 import com.bumptech.glide.Glide
 import com.example.core_data.models.OfferModel
@@ -34,6 +35,12 @@ class OffersListAdapter: PagingDataAdapter<OfferModel, OffersHolder>(
             onItemClickListener?.invoke(offerItem!!)
         }
 
+        viewHolder.binding.cardView.startAnimation(
+            AnimationUtils.loadAnimation(
+                context,
+                com.example.core_ui.R.anim.recycler_anim
+            )
+        )
         binding.offetTitle.text = offerItem?.title
         binding.offerType.text = offerItem?.description
     }

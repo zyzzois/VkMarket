@@ -1,7 +1,6 @@
 package com.example.offers.presentation
 
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
 import android.view.LayoutInflater
@@ -11,13 +10,12 @@ import android.view.ViewGroup
 import android.widget.PopupMenu
 import androidx.annotation.MenuRes
 import androidx.appcompat.widget.SearchView.OnQueryTextListener
-import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
+import androidx.paging.CombinedLoadStates
+import androidx.paging.LoadState
 import com.example.core_data.models.Category
-import com.example.core_ui.NavigationRoutes.OFFER_DETAILS_SCREEN
 import com.example.offers.R
 import com.example.offers.databinding.FragmentOffersBinding
 import com.example.offers.di.DaggerOffersComponent
@@ -25,7 +23,6 @@ import com.example.offers.di.OffersScreenDependenciesProvider
 import com.example.offers.presentation.recycler.OfferListLoadStateAdapter
 import com.example.offers.presentation.recycler.OffersListAdapter
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.gson.Gson
 
 class OffersFragment : Fragment() {
     private var _binding: FragmentOffersBinding? = null
@@ -41,7 +38,6 @@ class OffersFragment : Fragment() {
         .dependencies(OffersScreenDependenciesProvider.dependencies)
         .build()
 
-
     private val viewModel by lazy {
         component.getOffersViewModel()
     }
@@ -52,6 +48,19 @@ class OffersFragment : Fragment() {
     ): View {
         _binding = FragmentOffersBinding.inflate(inflater, container, false)
         return binding.root
+    }
+
+    private val warningDialog by lazy {
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle(R.string.warning_title)
+            .setMessage(R.string.warning_message)
+            .setPositiveButton(R.string.accept_warning) { _, _ -> }
+            .setNeutralButton(R.string.enable_connection) { _, _ ->
+                val intent = Intent(Settings.ACTION_WIFI_SETTINGS)
+                startActivity(intent)
+            }
+            .setIcon(R.drawable.icon_connection_lost)
+            .create()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -67,56 +76,38 @@ class OffersFragment : Fragment() {
     }
 
     private fun observeViewModel() {
-        viewModel.currentOffers.observe(viewLifecycleOwner) {
-            listAdapter.submitData(viewLifecycleOwner.lifecycle, it)
-            binding.progressBar.isVisible = false
-        }
-        viewModel.networkConnection.observe(viewLifecycleOwner) { connected ->
-            if (connected) {
-                viewModel.updateOffersWithAllOffers()
-            } else {
-                createWarningDialog()
+        viewModel.state.observe(viewLifecycleOwner) { state ->
+            when (state) {
+                is State.Initial -> viewModel.updateOffersWithAllOffers()
+                is State.Loading -> binding.recyclerView.visibility = View.GONE
+                is State.Error -> {
+                    warningDialog.show()
+                    binding.recyclerView.visibility = View.GONE
+                }
+                is State.Content -> {
+                    warningDialog.dismiss()
+                    binding.recyclerView.visibility = View.VISIBLE
+                    listAdapter.submitData(viewLifecycleOwner.lifecycle, state.offersList)
+                }
             }
         }
     }
 
-    private fun createWarningDialog() {
-        MaterialAlertDialogBuilder(requireContext())
-            .setTitle(R.string.warning_title)
-            .setMessage(R.string.warning_message)
-            .setPositiveButton(R.string.accept_warning) { _, _ -> }
-            .setNeutralButton(R.string.enable_connection) { _, _ ->
-                val intent = Intent(Settings.ACTION_WIFI_SETTINGS)
-                startActivity(intent)
-            }
-            .setIcon(ContextCompat.getDrawable(requireContext(), R.drawable.icon_connection_lost))
-            .show()
-    }
-
-    private fun setupClicks() {
-        listAdapter.onItemClickListener = {
-            val gson = Gson()
-            val offerAsString = gson.toJson(it)
-            val uri = Uri.parse("${OFFER_DETAILS_SCREEN}?offer=$offerAsString")
-            val navOptions = NavOptions.Builder()
-                .setEnterAnim(com.example.core_ui.R.anim.slide_in_right)
-                .setExitAnim(com.example.core_ui.R.anim.slide_out_left)
-                .setPopEnterAnim(com.example.core_ui.R.anim.slide_in_left)
-                .setPopExitAnim(com.example.core_ui.R.anim.slide_out_right)
-                .build()
+    private fun setupClicks() = with(binding) {
+        listAdapter.onItemClickListener = { offer ->
+            val uri = viewModel.getUriFromModel(offer)
             findNavController().navigate(uri, navOptions, null)
         }
-        binding.swipeToRefreshLayout.setOnRefreshListener {
-            binding.progressBar.isVisible = true
+        swipeToRefreshLayout.setOnRefreshListener {
             viewModel.updateOffersWithAllOffers()
-            binding.swipeToRefreshLayout.isRefreshing = false
+            swipeToRefreshLayout.isRefreshing = false
         }
-        binding.searchButton.setOnClickListener {
+        searchButton.setOnClickListener {
             setupCategoriesPopup(it, R.menu.sort_menu)
         }
-        binding.searchView.setOnQueryTextListener(object : OnQueryTextListener {
+        searchView.setOnQueryTextListener(object : OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
-                viewModel.updateOffersWithQuery(query ?: "")
+                viewModel.updateOffersWithQuery(query)
                 return true
             }
 
@@ -136,7 +127,6 @@ class OffersFragment : Fragment() {
         popup.menuInflater.inflate(menuRes, popup.menu)
 
         popup.setOnMenuItemClickListener { menuItem: MenuItem ->
-            binding.progressBar.isVisible = true
             when(menuItem.itemId) {
                 R.id.smartphone -> {
                     viewModel.updateOffersWithCategory(Category.SMARTPHONES)
@@ -220,12 +210,14 @@ class OffersFragment : Fragment() {
         popup.show()
     }
 
+
     private fun setupRecyclerView() {
         binding.recyclerView.adapter = listAdapter.withLoadStateFooter(OfferListLoadStateAdapter())
-        // Вернуть после фикса (https://github.com/android/codelab-android-paging/issues/167)
-//        listAdapter.addLoadStateListener { state: CombinedLoadStates ->
-//            binding.recyclerView.isVisible = state.refresh != LoadState.Loading
-//            binding.progressBar.isVisible = state.refresh == LoadState.Loading
-//        }
+        listAdapter.addLoadStateListener { state: CombinedLoadStates ->
+            binding.progressBar.isVisible = state.refresh == LoadState.Loading
+            if (state.refresh is LoadState.Error) {
+                warningDialog.show()
+            }
+        }
     }
 }

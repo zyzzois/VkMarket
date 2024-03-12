@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView
+    android:id="@+id/cardView"
     app:cardCornerRadius="15dp"
     android:elevation="28dp"
     android:layout_width="match_parent"
@@ -50,7 +51,7 @@
                     android:id="@+id/offetTitle"
                     android:textSize="16sp"
                     android:layout_weight="1"
-                    android:fontFamily="@font/roboto_medium"
+                    android:fontFamily="@font/vk_sans_display_bold"
                     android:textColor="@color/black"
                     android:text="@string/offer_name"
                     android:layout_width="0dp"
@@ -61,7 +62,7 @@
             <TextView
                 android:id="@+id/offerType"
                 android:textSize="12sp"
-                android:fontFamily="@font/roboto_bold"
+                android:fontFamily="@font/vk_sans_display_medium"
                 android:text="@string/offer_description"
                 android:maxLines="2"
                 android:ellipsize="end"
